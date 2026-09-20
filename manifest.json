@@ -1,0 +1,27 @@
+{
+  "name": "DALMAC PS4",
+  "short_name": "DALMAC PS4",
+  "description": "DALMAC PS4 Offline Edition",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#0b0d10",
+  "theme_color": "#0b0d10",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "assets/branding/dalmac-logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/branding/dalmac-logo.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}

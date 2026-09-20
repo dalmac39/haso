@@ -1,0 +1,526 @@
+/* ============================================================
+   DALMAC PS4 — Offline Edition Stylesheet
+   Modern, responsive, PS4-browser friendly dark theme
+   Supports Arabic (RTL default) and English (LTR)
+   ============================================================ */
+
+/* ---- Design Tokens ---- */
+:root {
+  --bg-primary:      #080a0d;
+  --bg-card:         rgba(8, 12, 18, 0.20);
+  --bg-card-solid:   #0d1117;
+  --bg-item:         rgba(0, 0, 0, 0.45);
+  --bg-item-hover:   rgba(0, 0, 0, 0.65);
+  --bg-overlay:      rgba(0, 0, 0, 0.12);
+  --border:          rgba(255, 255, 255, 0.18);
+  --border-focus:    #e67e22;
+
+  --accent:          #e67e22;
+  --accent-glow:     rgba(230, 126, 34, 0.35);
+  --accent-gradient: linear-gradient(135deg, #f39c12 0%, #e67e22 50%, #d35400 100%);
+
+  --text-primary:    #f0f3f8;
+  --text-secondary:  #8b96a5;
+  --text-muted:      #525d6b;
+
+  --state-verified:  #2ecc71;
+  --state-exper:     #e67e22;
+  --state-untested:  #f1c40f;
+  --state-unsupp:    #e74c3c;
+
+  --radius:          14px;
+  --radius-sm:       8px;
+  --radius-pill:     50px;
+
+  --font-stack:      "Segoe UI", -apple-system, BlinkMacSystemFont, Tahoma, Arial, sans-serif;
+  --font-mono:       "Consolas", "Courier New", monospace;
+}
+
+/* ---- Reset & Baseline ---- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  font-family: var(--font-stack);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- Full-screen Ambient Background ---- */
+.dalmac-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: url('assets/background/dalmac-background.png') center/cover no-repeat;
+}
+
+.dalmac-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+/* ---- Main Viewport Container ---- */
+.dalmac-main {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px 16px 48px;
+  animation: dalmacFadeIn 0.7s ease-out;
+}
+
+@keyframes dalmacFadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- Card Surface (Ultra-Transparent Glassmorphism) ---- */
+.dalmac-card {
+  position: relative;
+  background: rgba(5, 8, 13, 0.18);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius);
+  padding: 26px 36px;
+  max-width: 530px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35), 0 0 40px rgba(230, 126, 34, 0.12);
+  transition: box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.dalmac-card:hover {
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.45), 0 0 55px rgba(230, 126, 34, 0.18);
+  background: rgba(5, 8, 13, 0.26);
+}
+
+/* ---- Logo ---- */
+.dalmac-logo {
+  width: 95px;
+  height: auto;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(230, 126, 34, 0.5);
+  box-shadow: 0 4px 20px rgba(230, 126, 34, 0.35);
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.dalmac-logo:hover {
+  transform: scale(1.04);
+}
+
+/* ---- Title & Subtitle ---- */
+.dalmac-title {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.dalmac-subtitle {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+
+/* ---- Firmware Status Badge ---- */
+.fw-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 6px 18px;
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 20px;
+  border: 1px solid;
+  transition: all 0.3s ease;
+}
+
+.fw-badge .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.fw-badge .badge-sep {
+  opacity: 0.4;
+  margin: 0 2px;
+}
+
+/* Badge Variants */
+.fw-badge.verified {
+  background: rgba(46, 204, 113, 0.12);
+  border-color: rgba(46, 204, 113, 0.4);
+  color: var(--state-verified);
+}
+.fw-badge.verified .dot {
+  background: var(--state-verified);
+  box-shadow: 0 0 8px var(--state-verified);
+}
+
+.fw-badge.experimental {
+  background: rgba(230, 126, 34, 0.12);
+  border-color: rgba(230, 126, 34, 0.4);
+  color: var(--state-exper);
+}
+.fw-badge.experimental .dot {
+  background: var(--state-exper);
+  box-shadow: 0 0 8px var(--state-exper);
+  animation: pulseDot 2s ease-in-out infinite;
+}
+
+.fw-badge.untested {
+  background: rgba(241, 196, 15, 0.12);
+  border-color: rgba(241, 196, 15, 0.4);
+  color: var(--state-untested);
+}
+.fw-badge.untested .dot {
+  background: var(--state-untested);
+}
+
+.fw-badge.unsupported {
+  background: rgba(231, 76, 60, 0.12);
+  border-color: rgba(231, 76, 60, 0.4);
+  color: var(--state-unsupp);
+}
+.fw-badge.unsupported .dot {
+  background: var(--state-unsupp);
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.5; transform: scale(0.85); }
+}
+
+/* ---- Alert Banner ---- */
+.dalmac-alert {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: rgba(231, 76, 60, 0.15);
+  border: 1px solid rgba(231, 76, 60, 0.45);
+  border-radius: var(--radius-sm);
+  color: #ff9d92;
+  font-size: 13px;
+  margin-bottom: 20px;
+  text-align: start;
+}
+.dalmac-alert .alert-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+/* ---- Action START Button ---- */
+.action-wrap {
+  margin-bottom: 22px;
+}
+
+.btn-start {
+  display: inline-block;
+  width: 100%;
+  max-width: 320px;
+  padding: 15px 36px;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+  background: var(--accent-gradient);
+  border: none;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 6px 24px var(--accent-glow);
+  transition: transform 0.2s ease, box-shadow 0.3s ease, filter 0.2s ease;
+  outline: none;
+}
+
+.btn-start:hover,
+.btn-start:focus-visible {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 32px rgba(230, 126, 34, 0.6);
+  filter: brightness(1.1);
+}
+
+.btn-start:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 3px;
+}
+
+.btn-start:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.btn-start:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  filter: grayscale(0.4);
+}
+
+.btn-start::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: translateX(-100%);
+  animation: btnShimmer 3.5s ease-in-out infinite;
+}
+
+@keyframes btnShimmer {
+  0%   { transform: translateX(-100%); }
+  40%  { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* ---- Configuration & Status Grid ---- */
+.status-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 12px;
+  text-align: start;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--bg-item);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.status-item:hover {
+  background: var(--bg-item-hover);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.status-label {
+  color: var(--text-secondary);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.status-value {
+  font-weight: 700;
+  font-size: 12.5px;
+  text-align: end;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status-value.mono {
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
+  color: #cfd7e3;
+  direction: ltr;
+  unicode-bidi: isolate;
+  display: inline-block;
+}
+
+.status-value.ok   { color: var(--state-verified); }
+.status-value.warn { color: var(--state-untested); }
+.status-value.bad  { color: var(--state-unsupp); }
+.status-value.info { color: var(--text-muted); }
+
+/* ---- Diagnostic Log Toggle ---- */
+.log-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 18px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  margin-bottom: 16px;
+  font-family: inherit;
+}
+
+.log-toggle:hover,
+.log-toggle:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(230, 126, 34, 0.08);
+  outline: none;
+}
+
+.log-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.log-toggle .arrow {
+  font-size: 9px;
+  transition: transform 0.3s ease;
+}
+
+.log-toggle.open .arrow {
+  transform: rotate(180deg);
+}
+
+/* ---- Log Panel ---- */
+.log-panel {
+  width: 100%;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, opacity 0.25s ease;
+  opacity: 0;
+}
+
+.log-panel.open {
+  max-height: 280px;
+  opacity: 1;
+}
+
+.log-content {
+  background: rgba(6, 8, 11, 0.85);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  max-height: 230px;
+  overflow-y: auto;
+  direction: ltr;
+  text-align: left;
+}
+
+.log-line {
+  margin-bottom: 2px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.log-line.ok   { color: var(--state-verified); }
+.log-line.bad  { color: var(--state-unsupp); }
+.log-line.warn { color: var(--state-untested); }
+
+/* ---- Language Switcher ---- */
+.lang-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.lang-toggle button {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 12px;
+  font-family: inherit;
+  padding: 4px 10px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.lang-toggle button:hover,
+.lang-toggle button:focus-visible {
+  color: var(--accent);
+  background: rgba(255, 255, 255, 0.04);
+  outline: none;
+}
+
+.lang-toggle button.active {
+  color: var(--accent);
+  font-weight: 700;
+  background: rgba(230, 126, 34, 0.1);
+}
+
+.lang-toggle .sep {
+  opacity: 0.3;
+}
+
+/* ---- Bottom Offline Status ---- */
+.cache-status {
+  position: fixed;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  color: var(--text-muted);
+  z-index: 10;
+  background: rgba(8, 10, 13, 0.85);
+  padding: 4px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  pointer-events: none;
+}
+.cache-status.ok { color: var(--state-verified); }
+
+/* ---- Responsive & PS4 Layout Adjustments ---- */
+@media (max-width: 580px) {
+  .dalmac-card {
+    padding: 26px 20px;
+  }
+  .dalmac-logo { width: 110px; }
+  .dalmac-title { font-size: 22px; }
+  .status-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .btn-start {
+    padding: 13px 28px;
+    font-size: 15px;
+  }
+}
+
+/* PS4 Native 1080p Browser Optimization */
+@media (min-width: 1800px) {
+  .dalmac-card {
+    max-width: 600px;
+    padding: 44px 52px;
+  }
+  .dalmac-logo { width: 150px; }
+  .dalmac-title { font-size: 30px; }
+  .status-item { padding: 12px 16px; font-size: 14px; }
+  .status-value { font-size: 13.5px; }
+  .btn-start {
+    max-width: 360px;
+    padding: 18px 44px;
+    font-size: 19px;
+  }
+}
